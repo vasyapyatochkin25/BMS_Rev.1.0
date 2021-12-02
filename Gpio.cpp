@@ -74,8 +74,8 @@ void Gpio::SetAlternateFunction(Af af)
 	}
 	if (pin > 7)
 	{
-		gpio->AFR[1] &= ~0xf << (pin * 4); 
-		gpio->AFR[1] |= static_cast<uint32_t>(af) << 4*pin;
+		gpio->AFR[1] &= ~0xf << ((pin>>0xf) * 4); 
+		gpio->AFR[1] |= static_cast<uint32_t>(af) << (4*(pin>>0xf));
 	}
 }
 	
