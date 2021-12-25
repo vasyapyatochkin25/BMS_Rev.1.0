@@ -168,9 +168,15 @@
     <ClCompile Include="Gpio.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Adc.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gpio.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Adc.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

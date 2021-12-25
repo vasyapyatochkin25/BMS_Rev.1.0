@@ -24,24 +24,24 @@ Gpio::~Gpio()
 }
 
 	
-void Gpio::SetMode(GpioMode  Mode)
+void Gpio::SetMode(const GpioMode & Mode)
 {
 gpio->MODER &= ~(BITMASK << pin * 2);
 gpio->MODER |= (static_cast<uint8_t>(Mode) << pin * 2);
 }
 	
-void Gpio::SetSpeed(GpioSpeed Speed)
+void Gpio::SetSpeed(const GpioSpeed & Speed)
 {
 	gpio->OSPEEDR &= ~(BITMASK << pin * 2);
 	gpio->OSPEEDR |= (static_cast<uint8_t>(Speed) << pin * 2);
 }
-void Gpio::SetOutType(GpioType Type)
+void Gpio::SetOutType(const GpioType & Type)
 {
 	gpio->OTYPER &= ~(BITMASK << pin);
 	gpio->OTYPER |= (static_cast<uint8_t>(Type) << pin);
 }
 
-void Gpio::SetPull(GpioPull Pull)
+void Gpio::SetPull(const GpioPull & Pull)
 {
 	gpio->PUPDR &= ~(BITMASK << pin * 2);
 	gpio->PUPDR |= (static_cast<uint8_t>(Pull) << pin * 2);
@@ -65,7 +65,7 @@ bool Gpio::GetState()
 {
 	return gpio->IDR & (1 << pin); 
 }
-void Gpio::SetAlternateFunction(Af af)
+void Gpio::SetAlternateFunction(const Af & af)
 {
 	if (pin <= 7)
 	{

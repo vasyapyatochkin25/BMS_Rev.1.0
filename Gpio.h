@@ -16,14 +16,14 @@ class Gpio
 public:
 	Gpio(GPIO_TypeDef* Gpio, uint8_t PinNumber);
 	~Gpio();
-	void SetMode(GpioMode  Mode);
-	void SetSpeed(GpioSpeed Speed);
-	void SetOutType(GpioType Type);
-	void SetPull(GpioPull Pull);
+	void SetMode(const GpioMode & Mode);
+	void SetSpeed(const GpioSpeed & Speed);
+	void SetOutType(const GpioType & Type);
+	void SetPull(const GpioPull & Pull);
 	void SetState(bool state);
 	void ToggleState();
 	bool GetState();
-	void SetAlternateFunction(Af af);
+	void SetAlternateFunction(const Af & af);
 
 private:
 	
