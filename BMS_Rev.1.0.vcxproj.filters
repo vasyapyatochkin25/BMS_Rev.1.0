@@ -171,12 +171,18 @@
     <ClCompile Include="Adc.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Rcc.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gpio.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Adc.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rcc.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

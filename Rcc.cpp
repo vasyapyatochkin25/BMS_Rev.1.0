@@ -21,7 +21,7 @@
 				break;
 				case static_cast<uint32_t>(SrcClock::HSI):
 					RCC->CFGR|= RCC_CFGR_SW_HSI;
-					while(!(RCC->CFGR & RCC_CFGR_SWS_HSI)){}
+					while((RCC->CFGR & RCC_CFGR_SWS_HSI)){}
 				break;
 			}
 

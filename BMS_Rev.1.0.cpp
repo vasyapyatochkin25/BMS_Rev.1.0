@@ -1,7 +1,8 @@
-
 #include <stm32f0xx_ll_utils.h>
-#include "Gpio.h"
 #include <stdint.h>
+#include "Gpio.h"
+#include "Rcc.h"
+#include "Adc.h"
 
 #define F_CPU 8000000L
 #define  VREFINT_CAL *((uint16_t*)0x1FFFF7BA)
@@ -10,11 +11,15 @@ const float OverVoltage = 3.65;
 const float UnderVoltage = 2.7;
 const float OverVoltageGist  = 3.4;
 const float UnderVoltageGist = 3.0;
+
 void Write(uint8_t data);
 void AdcCalibration();
 void AdcClockEnable();
 void AdcEnable();
 void Adc_Read();
+Rcc rcc(SrcClock::HSI);
+Adc adc(ADC1, AdcClkSource::Hsi14mhz);
+
 Gpio Led(GPIOF, 1);
 Gpio Button(GPIOF, 0);
 Gpio Contactor(GPIOB, 1);
@@ -30,15 +35,19 @@ Gpio A3(GPIOA, 3);
 Gpio A4(GPIOA, 4);
 Gpio A5(GPIOA, 5);
 Gpio A6(GPIOA, 6);
+
+
+
 uint16_t ADC_Result[8];
 float B1, B2, B3, B4, Iakb, Vakb, bit = 0, Takb;
 
 uint32_t VDDA, VrefintData;
 uint8_t OVP=0, UVP=0;
+
 int main(void)
 {
 	//DBGMCU->CR |= DBGMCU_CR_DBG_STANDBY;
-	LL_InitTick(8000000, 1000);
+	LL_InitTick(48000000, 1000);
 	/*
 	Tx.SetSpeed(GpioSpeed::Max);
 	Tx.SetAlternateFunction(Af::Af1);
@@ -56,7 +65,8 @@ int main(void)
 	USART1->CR1 |= (1 << 8);
 	LL_mDelay(10);
 	*/
-	
+
+	rcc.PllOn(PllSrcClok::HSI_DIV2, PllxInFreq::Pllx_12);
 	Button.SetMode(GpioMode::In);
 	Button.SetPull(GpioPull::PullUp);
 	
@@ -71,34 +81,28 @@ int main(void)
 	A5.SetMode(GpioMode::Analog);
 	A6.SetMode(GpioMode::Analog);
 	
-	AdcClockEnable();
-	AdcCalibration();
-    AdcEnable();
-    
+	adc.Calibration();
+	adc.Enable();
+	adc.SetChannel(AdcChannel::Ch0);
+	adc.SetChannel(AdcChannel::Ch1);
+	adc.SetChannel(AdcChannel::Ch2);
+	adc.SetChannel(AdcChannel::Ch3);
+	adc.SetChannel(AdcChannel::Ch4);
+	adc.SetChannel(AdcChannel::Ch5);
+	adc.SetChannel(AdcChannel::Ch6);
+	adc.SetChannel(AdcChannel::Ch17);
 	
-/* (1) Select HSI14 by writing 00 in CKMODE (reset value) */
-/* (2) Select CHSEL0, CHSEL9, CHSEL10 andCHSEL17 for VRefInt */
-/* (3) Select a sampling mode of 111 i.e. 239.5 ADC clk to be greaterthan 17.1us */
-/* (4) Wake-up the VREFINT (only for VBAT, Temp sensor and VRefInt) */
-	
-	ADC1->CFGR2 &= ~ADC_CFGR2_CKMODE; /* (1) */
-	ADC1->CHSELR = ADC_CHSELR_CHSEL0 | ADC_CHSELR_CHSEL1 | ADC_CHSELR_CHSEL2 | ADC_CHSELR_CHSEL3 | ADC_CHSELR_CHSEL4|
-	ADC_CHSELR_CHSEL5|ADC_CHSELR_CHSEL6|ADC_CHSELR_CHSEL17; /* (2) */
-	ADC1->SMPR |= ADC_SMPR_SMP_0 | ADC_SMPR_SMP_1;//| ADC_SMPR_SMP_2; /* (3) */
-	ADC->CCR |= ADC_CCR_VREFEN; /* (4) */
+	adc.SamplingTime(AdcSamplinTime::cycle28_5);
+	adc.EnableVrefint();
 	
 	LL_mDelay(1000);
-	
-	
-		Adc_Read();
-		if ((B1 < OverVoltage) && (B2 < OverVoltage) && (B3 < OverVoltage) && (B4 < OverVoltage) && (B1 > UnderVoltage) && (B2 > UnderVoltage) && (B3 > UnderVoltage) && (B4 > UnderVoltage))
-		{
-			Contactor.SetState(true);
-		}	
-		
-	
-		
-		
+
+	Adc_Read();
+	if ((B1 < OverVoltage) && (B2 < OverVoltage) && (B3 < OverVoltage) && (B4 < OverVoltage) && (B1 > UnderVoltage) && (B2 > UnderVoltage) && (B3 > UnderVoltage) && (B4 > UnderVoltage))
+	{
+		Contactor.SetState(true);
+	}	
+				
 	for (;;)
 	{
 		Adc_Read();

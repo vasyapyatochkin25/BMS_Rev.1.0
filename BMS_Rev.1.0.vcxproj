@@ -59,6 +59,7 @@
     <ClCompile Include="Adc.cpp" />
     <ClCompile Include="BMS_Rev.1.0.cpp" />
     <ClCompile Include="Gpio.cpp" />
+    <ClCompile Include="Rcc.cpp" />
     <ClCompile Include="system_stm32f0xx.c" />
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F0xxxx\StartupFiles\startup_stm32f030x6.c" />
@@ -80,6 +81,7 @@
     <ClCompile Include="$(BSP_ROOT)\STM32F0xxxx\STM32F0xx_HAL_Driver\Src\stm32f0xx_ll_utils.c" />
     <ClInclude Include="Adc.h" />
     <ClInclude Include="Gpio.h" />
+    <ClInclude Include="Rcc.h" />
     <ClInclude Include="stm32f0xx_hal_conf.h" />
     <ClInclude Include="$(BSP_ROOT)\STM32F0xxxx\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_adc.h" />
     <ClInclude Include="$(BSP_ROOT)\STM32F0xxxx\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_bus.h" />

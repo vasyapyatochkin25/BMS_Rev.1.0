@@ -65,7 +65,7 @@ bool Gpio::GetState()
 {
 	return gpio->IDR & (1 << pin); 
 }
-void Gpio::SetAlternateFunction(const Af & af)
+void Gpio::SetAlternateFunction(const Af &  af)
 {
 	if (pin <= 7)
 	{
