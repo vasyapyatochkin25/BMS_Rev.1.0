@@ -1,5 +1,6 @@
 #pragma once
 #include "stm32f0xx.h"
+#define  VREFINT_CAL *((uint16_t*)0x1FFFF7BA)
 enum class AdcChannel :uint32_t {
 	Ch0  = 0x01,
 	Ch1  = 0x02,
@@ -40,8 +41,9 @@ public:
 	void EnableVrefint();
 	void EnableTsens();
 	void SelectMode();
+	void ReadSelectedChannel(uint16_t *analogData);
 private:
-
+	uint8_t countAdcChannel = 0;
 };
 
 

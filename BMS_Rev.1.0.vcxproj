@@ -42,7 +42,11 @@
     <ClCompile>
       <CPPLanguageStandard>CPP14</CPPLanguageStandard>
       <Optimization>Og</Optimization>
+      <DumpStackUsage>true</DumpStackUsage>
     </ClCompile>
+    <Link>
+      <ProduceRelocationRecords>true</ProduceRelocationRecords>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
     <ClCompile>

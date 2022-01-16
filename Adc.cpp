@@ -61,11 +61,13 @@ void Adc:: Calibration()
 void Adc:: SetChannel(const AdcChannel & channel)
 	{
 		adc->CHSELR |= static_cast<uint32_t>(channel);
+		countAdcChannel++;
 		
 	}
 void Adc:: ResetChannel(const AdcChannel & channel)
 	{
 		adc->CHSELR &= ~static_cast<uint32_t>(channel);
+		countAdcChannel--;
 	}
 void Adc:: SamplingTime(const AdcSamplinTime& Time)
 	{
@@ -88,5 +90,13 @@ void Adc::SelectMode()
 		
 	}
 	
-
+void Adc::ReadSelectedChannel(uint16_t *analogData)
+{
+	ADC1->CR |= ADC_CR_ADSTART; 
+	for (uint8_t i = 0; i < countAdcChannel; i++)
+	{
+		while ((ADC1->ISR & ADC_ISR_EOC) == 0) {}
+		analogData[i] = ADC1->DR; 
+	}
+}
 
